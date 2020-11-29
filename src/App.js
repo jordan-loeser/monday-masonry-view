@@ -1,7 +1,8 @@
 import React from "react";
 import mondaySdk from "monday-sdk-js";
 import styled from "styled-components";
-import { Card } from "./components";
+import { Loader } from "monday-ui-react-core";
+import { Card, InstructionScreen } from "./components";
 
 import "monday-ui-react-core/dist/main.css";
 import "./App.css";
@@ -18,13 +19,19 @@ const MASONRY_CONFIG = {
 const LINK_TYPE = "LINK_TYPE";
 const FILE_TYPE = "FILE_TYPE";
 
+const LoaderContainer = styled.div`
+  width: 48px;
+  margin: 0 auto;
+  height: 100vh;
+`;
+
 const MasonryContainer = styled.div`
   display: flex;
   flex-flow: column wrap;
   height: ${(props) => `${props.containerHeight}px` || "auto"};
   width: 100%;
   padding-left: ${MASONRY_CONFIG.gutterSize}px;
-  margin-top: ${MASONRY_CONFIG.gutterSize}px;
+  padding-top: ${MASONRY_CONFIG.gutterSize}px;
   box-sizing: border-box;
   align-content: flex-start;
 `;
@@ -132,8 +139,6 @@ class App extends React.Component {
   pullItems() {
     const hasSelectedColumn =
       Object.keys(this.state.settings?.image_column ?? {}).length !== 0;
-    console.log("*******pullItems", hasSelectedColumn);
-
     const query = `
       query ($boardIds: [Int], $columnIds: [String]) {
         boards(ids:$boardIds) {
@@ -233,7 +238,7 @@ class App extends React.Component {
       .map((card) => card.offsetHeight + MASONRY_CONFIG.gutterSize)
       .sort((a, b) => b - a);
     const tallestPossibleColumn =
-      10 +
+      MASONRY_CONFIG.gutterSize +
       sortedCardHeights
         .slice(0, maxItemsPerCol)
         .reduce((acc, curr) => acc + curr, 0);
@@ -250,12 +255,20 @@ class App extends React.Component {
 
   render() {
     const numCols = this.getNumCols();
+    const itemsToShow = this.state.showNonImageItems
+      ? this.state.items
+      : this.state.items.filter((item) => item.hasOwnProperty("image_url"));
     return (
       <div className="App">
-        <MasonryContainer containerHeight={this.state.containerHeight}>
-          {this.state.items.map((item, i) => {
-            return item.hasOwnProperty("image_url") ||
-              this.state.showNonImageItems ? (
+        {this.state.loading ? (
+          <LoaderContainer>
+            <Loader svgClassName="loader-size-md" />
+          </LoaderContainer>
+        ) : !this.state.showNonImageItems && itemsToShow.length === 0 ? (
+          <InstructionScreen />
+        ) : (
+          <MasonryContainer containerHeight={this.state.containerHeight}>
+            {itemsToShow.map((item, i) => (
               <Card
                 key={`card-${i}`}
                 item={item}
@@ -264,14 +277,14 @@ class App extends React.Component {
                 showName={this.state.showItemNames}
                 onLoad={this.handleImageLoaded.bind(this)}
               />
-            ) : null;
-          })}
-          {Array(numCols - 1)
-            .fill()
-            .map((_, i) => (
-              <Break key={`break-${i}`} numCols={numCols} />
             ))}
-        </MasonryContainer>
+            {Array(numCols - 1)
+              .fill()
+              .map((_, i) => (
+                <Break key={`break-${i}`} numCols={numCols} />
+              ))}
+          </MasonryContainer>
+        )}
       </div>
     );
   }

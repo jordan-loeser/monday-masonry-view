@@ -4,5 +4,7 @@ body {
 }
 
 .App {
+  background-color: #fff;
   width: 100vw;
+  min-height: 100vh;
 }
