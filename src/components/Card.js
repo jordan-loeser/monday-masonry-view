@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const CardContainer = styled.div`
-  min-height: 150px;
+  //   min-height: 150px;
   margin: 0 8px 8px 0;
   margin: ${({ gutterSize }) => `0 ${gutterSize}px ${gutterSize}px 0`};
   width: ${(props) => `calc(${100 / props.numCols}% - ${props.gutterSize}px)`};

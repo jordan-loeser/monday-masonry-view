@@ -122,23 +122,17 @@ class App extends React.Component {
     const numCols = this.getNumCols();
     return (
       <div className="App">
-        {/* <h1>
-          {this.state.windowWidth},{numCols},{this.state.containerHeight}
-        </h1> */}
         <MasonryContainer height={this.state.containerHeight}>
-          {this.state.items.map((item, i) => {
-            console.log("iiiiiii", i, numCols, i < numCols - 1);
-            return (
-              <Card
-                key={`card-${i}`}
-                item={item}
-                gutterSize={MASONRY_CONFIG.gutterSize}
-                numCols={numCols}
-              />
-            );
-          })}
+          {this.state.items.map((item, i) => (
+            <Card
+              key={`card-${i}`}
+              item={item}
+              gutterSize={MASONRY_CONFIG.gutterSize}
+              numCols={numCols}
+            />
+          ))}
           {Array(numCols - 1)
-            .fill(0)
+            .fill()
             .map((_, i) => (
               <Break key={`break-${i}`} numCols={numCols} />
             ))}
