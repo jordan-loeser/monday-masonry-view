@@ -168,13 +168,14 @@ class App extends React.Component {
           items: parsedItems,
           loading: false,
         });
-        console.log("7777777", parsedItems);
       });
   }
 
   componentDidMount() {
     window.addEventListener("resize", this.updateWindowDimensions.bind(this));
     monday.listen("settings", (res) => {
+      console.log("7777777", res.data);
+
       this.setState(
         {
           settings: res.data,
@@ -207,6 +208,14 @@ class App extends React.Component {
   }
 
   getNumCols() {
+    // Based on settings
+    if (
+      this.state.settings?.override_num_cols &&
+      this.state.settings.hasOwnProperty("num_cols")
+    )
+      return parseInt(this.state.settings.num_cols);
+
+    // Based on window size
     if (window.innerWidth >= 1024) {
       return MASONRY_CONFIG.dGridCol;
     } else if (window.innerWidth >= 768) {
