@@ -179,8 +179,6 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener("resize", this.updateWindowDimensions.bind(this));
     monday.listen("settings", (res) => {
-      console.log("7777777", res.data);
-
       this.setState(
         {
           settings: res.data,
@@ -230,8 +228,6 @@ class App extends React.Component {
   }
 
   setContainerHeight() {
-    console.log("*******settingContainerHeight");
-
     const cardList = Array.from(document.querySelectorAll("#masonryCard"));
     const maxItemsPerCol = Math.ceil(cardList.length / this.getNumCols());
     const sortedCardHeights = cardList
@@ -255,9 +251,10 @@ class App extends React.Component {
 
   render() {
     const numCols = this.getNumCols();
-    const itemsToShow = this.state.showNonImageItems
-      ? this.state.items
-      : this.state.items.filter((item) => item.hasOwnProperty("image_url"));
+    const itemsToShow =
+      this.state.showNonImageItems && this.state.showItemNames
+        ? this.state.items
+        : this.state.items.filter((item) => item.hasOwnProperty("image_url"));
     return (
       <div className="App">
         {this.state.loading ? (
