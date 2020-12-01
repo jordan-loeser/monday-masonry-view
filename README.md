@@ -1,8 +1,6 @@
 ## Inspiration
 
-This project was inspired by a problem I encounter often during my day-to-day life as a Software Engineer: a messy backlog.
-
-When working in a quick-paced environment with multiple tasks happening at once, it's not uncommon for items to get re-prioritized or fall out of scope. While it’s easy to throw outdated items into the backlog, it can be a monotonous and even daunting task to fish back through them later, which leads to items getting overlooked. By helping to remove unnecessary items in a fun and engaging way, Swipe View allows engineers to focus on items that are relevant and make sure they are attended to.
+This project was inspired by my love
 
 ## What it does
 
